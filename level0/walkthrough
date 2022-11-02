@@ -7,7 +7,7 @@ Segmentation fault (core dumped)
 
 lets debug it using gdb
 
-so basically it takes one arg and at main+25 it compares it with 423
+so basically it takes one arg and at main+25 it compares atoi(arg) with 423
 if its not equal it jumps to main+152 where it prints "no !" and exits
 else it store the uid and gid using getegid and geteuid functions and change them using setresgid and setresuid
 then it calls execv function with /bin/bash as arg
@@ -15,3 +15,4 @@ then it calls execv function with /bin/bash as arg
 ./level0 432
 
 we got a reverse shell with level1 privilege 
+then we cat .pass and we got the flag 
