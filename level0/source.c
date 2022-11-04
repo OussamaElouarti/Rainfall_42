@@ -9,8 +9,10 @@ int main(int argc, char** argv)
 	{
 		gid_t gid = getegid();
 		uid_t uid = geteuid();
-		setresgid(gid, gid, gid);
-		setresuid(uid, uid, uid);
+		//setresgid(gid, gid, gid); for linux
+		//setresuid(uid, uid, uid); for linux
+		setruid(uid); // for macos
+		setrgid(gid); // for macos
 		execv("/bin/sh", NULL);		
 	}
 	else 

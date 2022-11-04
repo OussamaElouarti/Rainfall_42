@@ -5,7 +5,11 @@ void p(void)
 	fflush(stdin);
 	char buffer[76];
 	gets(buffer);
-	p
+	if (strcmp(buffer, '0xb0000000'))
+		printf();
+	else
+		strdup(buffer);
+	return ;
 	
 }
 
