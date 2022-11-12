@@ -17,7 +17,7 @@ int		n()
 	fgets(buffer, 512, stdin);
     p(buffer);
 	if (m == 16930116)
-		system("/bin/sh cat ../level5/.pass");
+		return(system("/bin/cat /home/user/level5/.pass"));
 	return (0);
 }
 

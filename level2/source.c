@@ -1,16 +1,18 @@
 #include <stdlib.h>
+#include <stdio.h>
 
-void p(void)
+char * p(void)
 {
-	fflush(stdin);
-	char buffer[76];
+	fflush(stdout);
+	char buffer[10];
 	gets(buffer);
-	if (strcmp(buffer, '0xb0000000'))
-		printf();
-	else
-		strdup(buffer);
-	return ;
-	
+	void *p = __builtin_return_address(0);
+	if (((int)p & 0xb000000) == 0xb0000000)
+	{
+		printf("%p\n", p);
+		exit(1);
+	}
+	return(srtrdup(buffer));
 }
 
 

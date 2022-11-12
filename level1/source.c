@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 int run()
 {
@@ -9,7 +9,7 @@ int run()
 
 int main()
 {
-	char buffer[64];
-	gets(buffer);
+	char buf[64];
+	gets(buf);
 	return(0);
 }

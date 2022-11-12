@@ -7,17 +7,16 @@ int main(int argc, char** argv)
 {
 	if (atoi(argv[1]) == 423)
 	{
+		char* args = strdup("/bin/sh");
 		gid_t gid = getegid();
 		uid_t uid = geteuid();
-		//setresgid(gid, gid, gid); for linux
-		//setresuid(uid, uid, uid); for linux
-		setruid(uid); // for macos
-		setrgid(gid); // for macos
-		execv("/bin/sh", NULL);		
+		setresgid(gid, gid, gid); 
+		setresuid(uid, uid, uid);
+		execv("/bin/sh", &args);		
 	}
 	else 
 	{
-		write(1, "No !\n", 5);
+		fwrite("No !\n", 1, 5, STDERR_FILENO);
 	}
 	return (0);
 }

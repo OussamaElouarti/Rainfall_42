@@ -6,7 +6,7 @@ int		m = 0;
 int     o(char *buffer)
 {
 	system("/bin/sh");
-    return (0);
+    exit(1);
 }
 
 
@@ -16,7 +16,7 @@ int		n()
 
 	fgets(buffer, 512, stdin);
     printf(buffer);
-    return (0);
+    exit(1);
 }
 
 int		main()
