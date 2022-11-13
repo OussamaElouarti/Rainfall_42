@@ -7,10 +7,10 @@ Segmentation fault (core dumped)
 
 lets debug it using gdb
 
-so basically it takes one arg and at main+25 it compares atoi(arg) with 423
+so basically it takes one arg and at main+25 it compares atoi(arg[1]) with 423
 if its not equal it jumps to main+152 where it prints "no !" and exits
 else it store the uid and gid using getegid and geteuid functions and change them using setresgid and setresuid
-then it calls execv function with /bin/bash as arg
+then it calls execv function with /bin/sh as arg
 
 ./level0 432
 

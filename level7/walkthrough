@@ -1,1 +1,44 @@
+level7
+
+like always we have a binary ./level7 that take two args and prit ~~
+
+lets debug using gdb info function :
+
+main function that allocate 8 in heap using malloc to an address and put 1 in var[0] then allocate 8 to var[1] 
+the allocate 8 on the heap to a second variable ausing mallloc and puts 2 on var2[0] then allocate 8 to var2[1] 
+then use strcpy to copy the content of argv[1] in var[1] and to copy the content of argv[2] into var2[1]
+then call fgets and give it c a golbal no initialized variable and 68 as a buffer size and for the last arg return value
+of fopen call that takes "/home/user/level8/.pass" as first arg and "r" as second arg
+then call puts to print "~~"
+then return 0
+
+m function print the content of the c variable and the time using time(0)
+
+basically we need to ovwewrire the addres of the got of puts
+
+(gdb) disas 0x8048400
+Dump of assembler code for function puts@plt:
+   0x08048400 <+0>:	jmp    DWORD PTR ds:0x8049928
+   0x08048406 <+6>:	push   0x28
+   0x0804840b <+11>:	jmp    0x80483a0
+End of assembler dump.
+(gdb)
+
+the address of the got call is 0x8049928
+
+so basically we need to write the address of th got puts call in the address of var2[1] in the first copy
+then write int that address the address of the m function as value
+
+so we need to know the diff between the address of the var[1] and the addres of the var2[1]
+
+first thing we need to know the address pf the second malloc return : 0x804a018
+then we need the address that contain the value of var2[1] its the return of the third malloc + 0x4
+its 0x804a028 + 0x4 = 0x804a02c
+
+0x804a02c - 0x804a018 = 0x14 = 20 ist our padding 
+
+so we need a padding of 0 then write the address of the the got puts jmp then right on it the address of the m function as a value so when we gonna call the address of the jump in pputs we will be redirected to the m function
+
+so finally the payload will be somthing like this:
+
 ./level7 $(python -c "print('A' *20 + '\x28\x99\x04\x08')") $(python -c "print('\xf4\x84\x04\x08')")

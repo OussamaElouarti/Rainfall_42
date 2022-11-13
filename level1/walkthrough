@@ -6,11 +6,11 @@ lets debug using gdb fist thing after using info functions we have two function 
 
 main function create a buffer and call gets function to store the input in the buffer we know that gets function over flow the stack so basically if we give an input bigger than the buffer size we will have a segfault
 
-run function call fwrite to print somthing then call system function maybe to execute a shell
+run function call fwrite to print somthing then call system function with /bin/sh as arg
 
 so lets try to overflow the stack then overwrite eip register with the adresse of run function
 
-the program segfault after 76 chars
+at 76 program segfault and after 76 we write into the eip
 so the exploit will be somthing like this 
 
 python -c "print('A' * 76 + '\x44\x84\x04\x08')" | ./level1

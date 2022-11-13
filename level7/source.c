@@ -1,36 +1,26 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include <stdlib.h>
 
-char    *auth = NULL;
-char    *service = NULL;
+char c[68];
 
-int        main(void)
+void m()
 {
-    char    buffer[128];
-    
-    while (1)
-    {
-        printf("%p, %p\n", auth, service);
-        if (fgets(buffer, 128, stdin) == 0)
-            break;
-        if (strncmp(buffer, "auth ", 5) == 0)
-        {
-            auth = malloc(4);
-            auth[0] = 0;
-            if (strlen(buffer + 5) <= 28)
-                strcpy(auth, buffer + 5);
-        }
-        if (strncmp(buffer, "reset", 5) == 0)
-            free(auth);
-        if (strncmp(buffer, "service", 6) == 0)
-            service = strdup(buffer + 7);
-        if (strncmp(buffer, "login", 5) == 0)
-        {
-            if (auth[32] != 0)
-                system("/bin/sh");
-            else
-                fwrite("Password:\n", 10, 1, stdout);
-        }
-    }
+    printf("%s - %d\n", c, time(0));
+}
+
+int main(int argc, char **argv)
+{
+    int *a = malloc(8);
+    *a = 1;
+    a[1] = malloc(8);
+    int *b = malloc(8);
+    *b = 2;
+    b[1] = malloc(8);
+    strcpy((char*)a[1], argv[1]);
+    strcpy((char*)b[1], argv[2]);
+    fgets(c, 68, fopen("/home/suer/level8/.pass", "r"));
+    puts("~~");
+    return(0);
 }
