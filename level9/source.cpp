@@ -1,0 +1,38 @@
+#include <string.h>
+#include <stdlib.h>
+
+class N {
+    public :
+        int hamid;
+        char annotation[];
+        
+        N(int val)
+        {
+            //line of code is missing
+            hamid = val;
+        }
+        int operator+(N& n){
+            return(hamid +n.hamid);
+        }
+        int operator-(N& n){
+            return(hamid -n.hamid);
+        }
+        void setAnnotation(char *val)
+        {
+            size_t n = strlen(val);
+            memcpy(annotation, val, n);
+            return ;
+        }
+
+};
+
+int main(int argc, char**argv)
+{
+    if (argc <= 1)
+        exit(1);
+    N *first = new N(5);
+    N *second = new N(6);
+    first->setAnnotation(argv[1]);
+    (**second)();
+    return (0);
+}

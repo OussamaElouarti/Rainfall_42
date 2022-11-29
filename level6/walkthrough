@@ -14,7 +14,7 @@ the m function pirnts Nope using puts and return
 
 the n function call system with "/bin/cat /home/user/level7/.pass" as arg
 
-so basically we need to write in the first cariable till it overflow to the second address in heap and put the address of n function in place of the m function to do so we need to know the diff between the first address and the second one 
+so basically we need to write in the first c=variable till it overflow to the second address in heap and put the address of n function in place of the m function to do so we need to know the diff between the first address and the second one 
 
 (gdb) r adasdasdsad
 Starting program: /home/user/level6/level6 adasdasdsad
