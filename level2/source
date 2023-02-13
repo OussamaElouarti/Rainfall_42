@@ -12,7 +12,7 @@ char * p(void)
 		printf("%p\n", p);
 		exit(1);
 	}
-	return(srtrdup(buffer));
+	return(strdup(buffer));
 }
 
 

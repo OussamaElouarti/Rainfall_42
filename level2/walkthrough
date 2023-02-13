@@ -7,7 +7,7 @@ Lets debug with gdb:
 info functions gives us two function main() and p()
 main function calls the p function
 p function uses gets so its vulnerable to overflow but we cant see any type of shell calls like levels before
-Also we have a compariason that check if eip return address is a stack address so we can execute the shell code in the stack
+Also we have a comparaison that check if eip return address is a stack address so we can execute the shell code in the stack
 In the other hand we have an strdup call so if we manage to know the returned address from malloc we can put an shell code in it and overwrite the eip register with that address
 after many tries using ltrace we found out that the returned address from malloc is the same:
 
@@ -29,7 +29,7 @@ First thing we need to find a shellcode
 this is 25 bytes shellcode 
 
 Second thing we need to know at which byte the program arrives to eip register 
-we add A till we change in eip we found out that starting 80 we can change in eip 80-25
+we add 'A' till we change in eip we found out that starting 80 we can change in eip 80-25
 
 so the padding will be 55 bytes
 

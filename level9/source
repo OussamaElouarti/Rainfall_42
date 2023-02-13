@@ -8,7 +8,6 @@ class N {
         
         N(int val)
         {
-            //line of code is missing
             hamid = val;
         }
         int operator+(N& n){

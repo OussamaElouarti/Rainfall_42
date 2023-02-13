@@ -30,7 +30,7 @@ void pp(char *str)
 
 int     mian(void)
 {
-    char str[54];
+    char str[50];
     pp(str);
     puts(str);
     return (0);

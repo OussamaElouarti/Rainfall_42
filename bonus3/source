@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int main(int argc, char**argv)
+{
+    int n;
+    char *str;
+    char buffer[66];
+    char buffer1[66];
+    FILE *f;
+
+    f = fopen("/home/user/end/.pass", "r");
+    if (f == NULL || argc !=2)
+        n = -1;
+    else
+    {
+        fread(buffer, 1, 66, f);
+        n = atoi(argv[1]);
+        buffer[n] = 0;
+        fread(buffer1, 1, 65, f);
+        fclose(f);
+        n = strcmp(buffer, argv[1]);
+        if (n == 0)
+            execl("/bin/sh", "sh", 0);
+        else
+            puts(buffer);
+    }
+    return(n);
+}
